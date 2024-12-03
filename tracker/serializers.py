@@ -9,14 +9,20 @@ from tracker.models import Employee, Task
 
 class EmployeeSerializer(ModelSerializer):
     """Сериализатор для сотрудников."""
+
     class Meta:
         model = Employee
-        fields = '__all__'
+        fields = "__all__"
 
-        def validate_full_name(self, value):
-            if len(value) < 3:
-                raise serializers.ValidationError("Имя должно содержать минимум 3 символа.")
-            return value
+    def validate_full_name(self, value):
+        if len(value) < 3:
+            raise serializers.ValidationError("Имя должно содержать минимум 3 символа.")
+        return value
+
+    def validate_position(self, value):
+        if len(value) > 150:
+            raise serializers.ValidationError("Имя должно быть меньше 150 символов.")
+        return value
 
 
 class TaskSerializer(ModelSerializer):
@@ -24,10 +30,11 @@ class TaskSerializer(ModelSerializer):
 
     class Meta:
         model = Task
-        fields = '__all__'
+        fields = "__all__"
 
-
-        def validate_deadline(self, value):
-            if value < datetime.date.today():
-                raise serializers.ValidationError("Срок выполнения не может быть в прошлом.")
-            return value
+    def validate_deadline(self, value):
+        if value < datetime.date.today():
+            raise serializers.ValidationError(
+                "Срок выполнения не может быть в прошлом."
+            )
+        return value

@@ -3,8 +3,10 @@ from django.utils.translation import gettext_lazy as _
 
 NULLABLE = {"blank": True, "null": True}
 
+
 class Employee(models.Model):
     """Модель сотрудника."""
+
     full_name = models.CharField(max_length=150, verbose_name="ФИО")
     position = models.CharField(max_length=100, verbose_name="Должность")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
@@ -20,6 +22,7 @@ class Employee(models.Model):
 
 class Task(models.Model):
     """Модель задачи."""
+
     class TaskStatus(models.TextChoices):
         NOT_STARTED = "not_started", _("Не начата")
         IN_PROGRESS = "in_progress", _("В работе")
@@ -27,10 +30,18 @@ class Task(models.Model):
 
     name = models.CharField(max_length=255, verbose_name="Название задачи")
     parent_task = models.ForeignKey(
-        "self", **NULLABLE, on_delete=models.SET_NULL, related_name="subtasks", verbose_name="Родительская задача"
+        "self",
+        **NULLABLE,
+        on_delete=models.SET_NULL,
+        related_name="subtasks",
+        verbose_name="Родительская задача"
     )
     employee = models.ForeignKey(
-        Employee, **NULLABLE, on_delete=models.SET_NULL, related_name="tasks", verbose_name="Исполнитель"
+        Employee,
+        **NULLABLE,
+        on_delete=models.SET_NULL,
+        related_name="tasks",
+        verbose_name="Исполнитель"
     )
     deadline = models.DateField(verbose_name="Срок выполнения")
     status = models.CharField(
@@ -48,4 +59,3 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
-

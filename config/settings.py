@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "tracker",
-
 ]
 
 MIDDLEWARE = [
@@ -94,7 +93,6 @@ TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 
 USE_TZ = True
-
 
 
 STATIC_URL = "static/"
