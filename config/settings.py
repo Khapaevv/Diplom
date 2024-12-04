@@ -7,7 +7,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-1gmr#2dr44#q6q345_^$d30x3f^@g238xh$=%y@w=ny-m-*b@)"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 DEBUG = True
