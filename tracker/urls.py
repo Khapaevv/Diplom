@@ -1,18 +1,12 @@
 from django.urls import path
 
 from tracker.apps import TrackerConfig
-from tracker.views import (
-    EmployeeCreateAPIView,
-    EmployeeDestroyAPIView,
-    EmployeeListAPIView,
-    EmployeeRetrieveAPIView,
-    EmployeeUpdateAPIView,
-    TaskCreateAPIView,
-    TaskDestroyAPIView,
-    TaskListAPIView,
-    TaskRetrieveAPIView,
-    TaskUpdateAPIView, BusyEmployeesView, ImportantTasksView,
-)
+from tracker.views import (BusyEmployeesView, EmployeeCreateAPIView,
+                           EmployeeDestroyAPIView, EmployeeListAPIView,
+                           EmployeeRetrieveAPIView, EmployeeUpdateAPIView,
+                           ImportantTasksView, TaskCreateAPIView,
+                           TaskDestroyAPIView, TaskListAPIView,
+                           TaskRetrieveAPIView, TaskUpdateAPIView)
 
 app_name = TrackerConfig.name
 
@@ -41,7 +35,6 @@ urlpatterns = [
     path(
         "task_retrieve/<int:pk>/", TaskRetrieveAPIView.as_view(), name="task-retrieve"
     ),
-    path('employees/busy/', BusyEmployeesView.as_view(), name='busy-employees'),
-    path('tasks/important/', ImportantTasksView.as_view(), name='important-tasks'),
-
+    path("employees/busy/", BusyEmployeesView.as_view(), name="busy-employees"),
+    path("tasks/important/", ImportantTasksView.as_view(), name="important-tasks"),
 ]
