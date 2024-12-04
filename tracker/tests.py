@@ -74,7 +74,6 @@ class EmployeeAPITests(APITestCase):
     def test_retrieve_nonexistent_employee(self):
         nonexistent_id = 9999
 
-
         self.retrieve_url = reverse("tracker:employee-retrieve", args=[nonexistent_id])
         response = self.client.get(self.retrieve_url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -124,36 +123,39 @@ class TaskAPITestCase(APITestCase):
         self.assertEqual(response.data[0]["full_name"], "Иван Иванов")
 
 
-
 class ImportantTasksTestCase(APITestCase):
     def setUp(self):
         # Создаем сотрудников
-        self.employee = Employee.objects.create(full_name="John Doe", position="Developer")
-        self.other_employee = Employee.objects.create(full_name="Jane Smith", position="Manager")
+        self.employee = Employee.objects.create(
+            full_name="John Doe", position="Developer"
+        )
+        self.other_employee = Employee.objects.create(
+            full_name="Jane Smith", position="Manager"
+        )
 
         # Создаем задачи и подзадачи
         self.parent_task = Task.objects.create(
             name="Parent Task",
             employee=self.employee,
             deadline="2024-12-01",
-            status="completed"
+            status="completed",
         )
         self.subtask = Task.objects.create(
             name="Subtask",
             employee=self.employee,
             deadline="2024-12-02",
             status="in_progress",
-            parent_task=self.parent_task
+            parent_task=self.parent_task,
         )
         # Создаем задачи без подзадач
         self.independent_task = Task.objects.create(
             name="Independent Task",
             employee=self.other_employee,
             deadline="2024-12-01",
-            status="not_started"
+            status="not_started",
         )
 
-        self.url_important_tasks = reverse('tracker:important-tasks')
+        self.url_important_tasks = reverse("tracker:important-tasks")
 
     def test_important_tasks(self):
         # Отправляем GET запрос для получения важных задач
@@ -167,8 +169,9 @@ class ImportantTasksTestCase(APITestCase):
 
         # Проверка на наличие родительской задачи
         task_data = response.data[0]
-        self.assertEqual(task_data['task']['name'], "Parent Task")
+        self.assertEqual(task_data["task"]["name"], "Parent Task")
 
         # Проверяем, что подзадачи правильно включены в данные задачи
-        self.assertIn('employees', task_data)  # Должны быть сотрудники, работающие над задачей
-
+        self.assertIn(
+            "employees", task_data
+        )  # Должны быть сотрудники, работающие над задачей
